@@ -30,7 +30,7 @@ class DraggableView: UIView {
     var xFromCenter: Float!
     var yFromCenter: Float!
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -46,7 +46,7 @@ class DraggableView: UIView {
 
         self.backgroundColor = UIColor.whiteColor()
 
-        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "beingDragged:")
+        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(DraggableView.beingDragged(_:)))
 
         self.addGestureRecognizer(panGestureRecognizer)
         self.addSubview(information)
@@ -57,6 +57,8 @@ class DraggableView: UIView {
 
         xFromCenter = 0
         yFromCenter = 0
+        
+        loadViewFromNib()
     }
 
     func setupView() -> Void {
@@ -123,7 +125,7 @@ class DraggableView: UIView {
     
     func rightAction() -> Void {
         let finishPoint: CGPoint = CGPointMake(500, 2 * CGFloat(yFromCenter) + self.originPoint.y)
-        UIView.animateWithDuration(0.3,
+        UIView.animateWithDuration(0.5,
             animations: {
                 self.center = finishPoint
             }, completion: {
@@ -135,7 +137,7 @@ class DraggableView: UIView {
 
     func leftAction() -> Void {
         let finishPoint: CGPoint = CGPointMake(-500, 2 * CGFloat(yFromCenter) + self.originPoint.y)
-        UIView.animateWithDuration(0.3,
+        UIView.animateWithDuration(0.5,
             animations: {
                 self.center = finishPoint
             }, completion: {
@@ -169,5 +171,8 @@ class DraggableView: UIView {
                 self.removeFromSuperview()
         })
         delegate.cardSwipedLeft(self)
+    }
+    
+    func loadViewFromNib() {
     }
 }
